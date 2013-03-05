@@ -13,16 +13,14 @@ int * merge(Vector * a, Vector * b) {
     int counter;
 
     for(counter = 0; counter<total; ++counter) {
-
-        if(a->numbers[i] < b->numbers[j]) {
-
-            result[counter] = a->numbers[i];
-            ++i;
-
-        } else {
-
+        if(i>=a->length || a->numbers[i] > b->numbers[j]) {
             result[counter] = b->numbers[j];
             ++j;
+        } else if(j>=b->length || a->numbers[i] <= b->numbers[j]) {
+            result[counter] = a->numbers[i];
+            ++i;
+        } else {
+            printf("\nerrrroorr\n");
         }
     }
 
@@ -31,17 +29,17 @@ int * merge(Vector * a, Vector * b) {
 
 int main() {
 
-    Vector * temp = NULL;
-    temp->length = 5;
-    int a[5] = {1, 3, 4, 5, 1};
-    temp->numbers = a;
+    Vector temp;
+    temp.length = 5;
+    int a[5] = {1, 3, 4, 7, 9};
+    temp.numbers = a;
 
-    Vector *  temp2 = NULL;
-    temp2->length = 3;
-    int b[3] = {10, 11, 12};
-    temp2->numbers = b;
+    Vector temp2;
+    temp2.length = 3;
+    int b[3] = {2, 6, 12};
+    temp2.numbers = b;
 
-    int * result = merge(temp, temp2);
+    int * result = merge(&temp, &temp2);
 
     printf("\n[");
     int i;
@@ -49,7 +47,7 @@ int main() {
         printf("%d, ", result[i]);
     }
 
-    printf("[\n");
+    printf("]\n");
     free(result);
     return 0;
 }
