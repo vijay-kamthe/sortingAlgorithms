@@ -7,3 +7,7 @@ test: test.o
 
 clean:
 	rm -f test.o bubblesort.o quicksort.o vector.o mergesort.o heapsort.o utils.o
+
+debug: test.o
+	gcc -g -o test utils.c vector.c bubblesort.c quicksort.c mergesort.c heapsort.c test.c
+
