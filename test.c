@@ -3,6 +3,7 @@
 #include "vector.h"
 #include "bubblesort.h"
 #include "quicksort.h"
+#include "mergesort.h"
 #include "test.h"
 
 void testSort(sortVector sort) {
@@ -57,6 +58,8 @@ int main(int argc, char *argv[]) {
     printf("\nBubble Sort tests passed\n");
     testSort(quickSort);
     printf("\nQuick Sort tests passed\n");
+    testSort(mergeSort);
+    printf("\nMerge sort tests passed");
 
   return 0;
 }

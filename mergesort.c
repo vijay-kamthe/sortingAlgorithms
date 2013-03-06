@@ -1,54 +1,62 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "vector.h"
+#include "utils.h"
 #include "mergesort.h"
 
-int * merge(Vector * a, Vector * b) {
 
-    int total = a->length+b->length;
-    int * result = malloc(total*sizeof(int));
+int * merge(const Vector * a, const Vector * b) {
+
+    int totalLength = a->length+b->length;
+    int * result = malloc(totalLength*sizeof(int));
     int i = 0;
     int j = 0;
-    int counter;
+    int counter = 0;
 
-    for(counter = 0; counter<total; ++counter) {
-        if(i>=a->length || a->numbers[i] > b->numbers[j]) {
-            result[counter] = b->numbers[j];
-            ++j;
-        } else if(j>=b->length || a->numbers[i] <= b->numbers[j]) {
-            result[counter] = a->numbers[i];
-            ++i;
+    while (i < a->length || j < b->length) {
+      if (i < a->length && j < b->length) {
+        if (a->numbers[i] <= b->numbers[j]) {
+          result[counter] = a->numbers[i];
+          i++;
+          counter++;
         } else {
-            printf("\nerrrroorr\n");
+          result[counter] = b->numbers[j];
+          j++;
+          counter++;
         }
+      } else if (i < a->length) {
+        result[counter] = a->numbers[i];
+        i++;
+        counter++;
+      } else if (j < b->length) {
+        result[counter] = b->numbers[j];
+        j++;
+        counter++;
+      }
     }
-
     return result;
 }
 
-int main() {
 
-    Vector temp;
-    temp.length = 5;
-    int a[5] = {1, 3, 4, 7, 9};
-    temp.numbers = a;
+Vector * mergeSort(Vector *vec) {
+  if (vec->length <= 1) {
+    return vec;
+  }
 
-    Vector temp2;
-    temp2.length = 3;
-    int b[3] = {2, 6, 12};
-    temp2.numbers = b;
+  int middle = vec->length / 2;
 
-    int * result = merge(&temp, &temp2);
+  Vector a;
+  a.length = middle;
+  a.numbers = vec->numbers;
 
-    printf("\n[");
-    int i;
-    for(i=0;i<8;++i){
-        printf("%d, ", result[i]);
-    }
+  Vector b;
+  b.length = vec->length - middle;
+  b.numbers = vec->numbers + middle;
 
-    printf("]\n");
-    free(result);
-    return 0;
+  int *merged = merge(mergeSort(&a), mergeSort(&b));
+  copy(merged, vec->numbers, vec->length);
+  free(merged);
+
+  return vec;
 }
 

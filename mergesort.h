@@ -2,7 +2,7 @@
 #ifndef MERGESORT
 #define MERGESORT
 
-int * merge(Vector *, Vector *);
+int * merge(const Vector *, const Vector *);
 Vector * mergeSort(Vector *);
 
 #endif
