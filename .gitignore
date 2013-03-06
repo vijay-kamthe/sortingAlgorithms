@@ -16,4 +16,9 @@
 *.out
 *.app
 
-.swp
+# Vim backup file
+*.swp
+
+# test executable
+test
+
