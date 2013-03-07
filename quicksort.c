@@ -40,8 +40,8 @@ void quickSortRecur(struct vector * vector, int left, int right) {
 
 struct vector * quickSort(struct vector * vector) {
 
-    /* initialize random seed: */
-    srand (time(NULL));
+//    /* initialize random seed: */
+//    srand (time(NULL));
 
     quickSortRecur(vector, 0, vector->length-1);
 

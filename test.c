@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "bubblesort.h"
-//#include "quicksort.h"
+#include "quicksort.h"
 //#include "mergesort.h"
 //#include "heapsort.h"
 #include "test.h"
 
 #define LAST_MARKER 666
 
-int compr(const void *p1, const void *p2) {
+static int compr(const void *p1, const void *p2) {
 
     int a = *(int *) p1;
     int b = *(int *) p2;
@@ -19,12 +19,13 @@ int compr(const void *p1, const void *p2) {
     return 0;
 }
 
-void testSort(sortFun sortfun) {
+static void testSort(sortFun sortfun) {
 
     int testArrays[][99] = {
                             {1, 12, 8, 4, -2, LAST_MARKER},
                             {1, 2, 3, LAST_MARKER},
                             {1, LAST_MARKER},
+                            {LAST_MARKER},
                             {-3, -3, 34, LAST_MARKER},
                             {-3, -3, 34, LAST_MARKER},
                             {-1, 2, -5, 6, 8, LAST_MARKER},
@@ -40,7 +41,7 @@ void testSort(sortFun sortfun) {
 
         struct vector a;
         int tempa[99];
-        a.numbers = tempa;
+        //a.numbers = tempa;
         fillVector(&a, list, length);
 
         struct vector b;
@@ -99,8 +100,17 @@ void testSort(sortFun sortfun) {
 
 int main() {
 
-    testSort(bubbleSort);
-    printf("\nBubble Sort tests passed\n");
+    struct {
+        sortFun fun;
+        char * name;
+    } funs[] = {{bubbleSort, "bubblesort"}, {quickSort, "quicksort"}}; //...};
+
+    unsigned int i;
+    for(i=0; i<sizeof(funs)/sizeof(funs[0]); ++i) {
+        testSort(funs[i].fun);
+        printf("\n%s tests passed\n", funs[i].name);
+    }
+
 //    testSort(quickSort);
 //    printf("\nQuick Sort tests passed\n");
 //    testSort(mergeSort);
