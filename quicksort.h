@@ -3,9 +3,9 @@
 
 #include "vector.h"
 
-int partition(Vector * vector, int left, int right, int pivotIndex);
-void quickSortRecur(Vector * vector, int left, int right);
-Vector * quickSort(Vector * vector);
+int partition(struct vector * vector, int left, int right, int pivotIndex);
+void quickSortRecur(struct vector * vector, int left, int right);
+struct vector * quickSort(struct vector * vector);
 
 #endif
 

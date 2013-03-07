@@ -3,6 +3,6 @@
 
 #include "vector.h"
 
-Vector* bubbleSort(Vector *);
+struct vector* bubbleSort(struct vector *);
 
 #endif

@@ -1,7 +1,7 @@
 #include "utils.h"
 #include "bubblesort.h"
 
-Vector* bubbleSort(Vector *vector) {
+struct vector* bubbleSort(struct vector *vector) {
     int sorted;
     int i;
     do {

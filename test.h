@@ -3,8 +3,8 @@
 
 #include "vector.h"
 
-typedef Vector* (*sortVector)(Vector *);
-void testSort(sortVector);
+typedef struct vector* (*sortFun)(struct vector *);
+void testSort(sortFun);
 
 #endif
 

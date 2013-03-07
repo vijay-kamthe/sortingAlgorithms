@@ -4,7 +4,7 @@
 
 #include "vector.h"
 
-int * merge(const Vector *, const Vector *);
-Vector * mergeSort(Vector *);
+int * merge(const struct vector *, const struct vector *);
+struct vector * mergeSort(struct vector *);
 
 #endif

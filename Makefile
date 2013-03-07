@@ -1,13 +1,22 @@
-CFLAGS=-Wall
+CFLAGS=-Wall -g -ggdb -Wextra -O2
 
+CC=gcc
+
+.PHONY:all
 all: test
 
-test: test.o
-	gcc -o test utils.c vector.c bubblesort.c quicksort.c mergesort.c heapsort.c test.c
+CSOURCE=utils.c \
+	vector.c \
+	test.c \
+	bubblesort.c#\
+#	quicksort.c \
+#	mergesort.c \
+#	heapsort.c \
 
+test: $(CSOURCE)
+	$(CC) $(CFLAGS) -o test $(CSOURCE)
+
+.PHONY:clean
 clean:
-	rm -f test.o bubblesort.o quicksort.o vector.o mergesort.o heapsort.o utils.o
-
-debug: test.o
-	gcc -g -o test utils.c vector.c bubblesort.c quicksort.c mergesort.c heapsort.c test.c
+	rm -f test
 

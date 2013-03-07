@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include "vector.h"
+#include "utils.h"
 
-void printVector(Vector *vec) {
+void fillVector(struct vector * vec, int * array, int length) {
+    vec->length = length;
+    copy(array, vec->numbers, length);
+}
+    
+void printVector(struct vector *vec) {
     int i;
     printf("[");
     for (i = 0; i < vec->length; ++i) {
@@ -10,7 +16,7 @@ void printVector(Vector *vec) {
     printf("]");
 }
 
-int compareVectors(Vector *a, Vector *b) {
+int compareVectors(struct vector *a, struct vector *b) {
 
     if (a->length != b->length) return 1;
 

@@ -1,13 +1,14 @@
 #ifndef VECTOR
 #define VECTOR
 
-typedef struct {
+struct vector{
   int length;
   int *numbers;
-} Vector;
+};
 
-void printVector(Vector *);
-int compareVectors(Vector *, Vector *);
+void fillVector(struct vector *, int *, int);
+void printVector(struct vector *);
+int compareVectors(struct vector *, struct vector *);
 
 #endif
 
