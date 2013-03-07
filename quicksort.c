@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <time.h>
-#include "vector.h"
 #include "utils.h"
 #include "quicksort.h"
 
@@ -41,10 +40,11 @@ void quickSortRecur(Vector * vector, int left, int right) {
 
 Vector * quickSort(Vector * vector) {
 
-  /* initialize random seed: */
-  srand (time(NULL));
+    /* initialize random seed: */
+    srand (time(NULL));
 
-  quickSortRecur(vector, 0, vector->length-1);
+    quickSortRecur(vector, 0, vector->length-1);
 
-  return vector;
+    return vector;
 }
+

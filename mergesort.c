@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "vector.h"
 #include "utils.h"
 #include "mergesort.h"
 
-
 int * merge(const Vector * a, const Vector * b) {
+
+    // create a new array on the heap that merge
+    // two sorted arrays while keeping the order
 
     int totalLength = a->length+b->length;
     int * result = malloc(totalLength*sizeof(int));
