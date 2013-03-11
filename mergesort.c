@@ -3,7 +3,7 @@
 #include "utils.h"
 #include "mergesort.h"
 
-int * merge(const Vector * a, const Vector * b) {
+static int * merge(const struct vector * a, const struct vector * b) {
 
     // create a new array on the heap that merge
     // two sorted arrays while keeping the order
@@ -14,43 +14,43 @@ int * merge(const Vector * a, const Vector * b) {
     int j = 0;
     int counter = 0;
 
-    while (i < a->length || j < b->length) {
-      if (i < a->length && j < b->length) {
-        if (a->numbers[i] <= b->numbers[j]) {
-          result[counter] = a->numbers[i];
-          i++;
-          counter++;
-        } else {
-          result[counter] = b->numbers[j];
-          j++;
-          counter++;
-        }
-      } else if (i < a->length) {
+    while (i < a->length && j < b->length) {
+      if (a->numbers[i] <= b->numbers[j]) {
         result[counter] = a->numbers[i];
         i++;
-        counter++;
-      } else if (j < b->length) {
+      } else {
         result[counter] = b->numbers[j];
         j++;
-        counter++;
       }
+      counter++;
+    }
+
+    while (i < a->length) {
+      result[counter] = a->numbers[i];
+      i++;
+      counter++;
+    }
+
+    while (j < b->length) {
+      result[counter] = b->numbers[j];
+      j++;
+      counter++;
     }
     return result;
 }
 
-
-Vector * mergeSort(Vector *vec) {
+struct vector * mergeSort(struct vector *vec) {
   if (vec->length <= 1) {
     return vec;
   }
 
   int middle = vec->length / 2;
 
-  Vector a;
+  struct vector a;
   a.length = middle;
   a.numbers = vec->numbers;
 
-  Vector b;
+  struct vector b;
   b.length = vec->length - middle;
   b.numbers = vec->numbers + middle;
 

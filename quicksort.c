@@ -3,7 +3,7 @@
 #include "utils.h"
 #include "quicksort.h"
 
-int partition(struct vector * vector, int left, int right, int pivotIndex) {
+static int partition(struct vector * vector, int left, int right, int pivotIndex) {
 
     int pivotValue = vector->numbers[pivotIndex];
 
@@ -24,7 +24,7 @@ int partition(struct vector * vector, int left, int right, int pivotIndex) {
     return storeIndex;
 }
 
-void quickSortRecur(struct vector * vector, int left, int right) {
+static void quickSortRecur(struct vector * vector, int left, int right) {
 
     if(left<right) {
 
@@ -39,9 +39,6 @@ void quickSortRecur(struct vector * vector, int left, int right) {
 }
 
 struct vector * quickSort(struct vector * vector) {
-
-//    /* initialize random seed: */
-//    srand (time(NULL));
 
     quickSortRecur(vector, 0, vector->length-1);
 

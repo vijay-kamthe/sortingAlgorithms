@@ -6,7 +6,7 @@ void fillVector(struct vector * vec, int * array, int length) {
     vec->length = length;
     copy(array, vec->numbers, length);
 }
-    
+
 void printVector(struct vector *vec) {
     int i;
     printf("[");
