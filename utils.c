@@ -16,10 +16,13 @@ void swap(void *a, void *b, size_t numBytes) {
     }
 }
 
-void copy(int *a, int *b, int length) {
-    int i;
-    for (i = 0; i < length; i++) {
-        b[i] = a[i];
+void copy(void *a, void *b, size_t numBytes) {
+    char *ptr1 = (char*)a;
+    char *ptr2 = (char*)b;
+
+    size_t i;
+    for (i = 0; i < numBytes; ++i) {
+        ptr1[i] = ptr2[i];
     }
 }
 

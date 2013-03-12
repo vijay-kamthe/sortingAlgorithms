@@ -2,8 +2,7 @@
 #ifndef MERGESORT
 #define MERGESORT
 
-#include "vector.h"
-
-struct vector * mergeSort(struct vector *);
+void mergeSort(void *, size_t, size_t, int(*cmp)(const void *, const void *));
 
 #endif
+

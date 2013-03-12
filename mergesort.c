@@ -39,25 +39,12 @@ static int * merge(const struct vector * a, const struct vector * b) {
     return result;
 }
 
-struct vector * mergeSort(struct vector *vec) {
-  if (vec->length <= 1) {
-    return vec;
+void mergeSort(void *base, size_t nmemb, size_t size, int(*cmp)(const void * p1, const void *p2)) {
+  if (nmemb > 1) {
+      int half = nmemb / 2;
+      void *merged = merge(mergeSort(base, half, size, cmp), mergeSort(base + half * size, nmemb-half, size, cmp));
+      copy(merged, base, nmemb*size);
+      free(merged);
   }
-
-  int middle = vec->length / 2;
-
-  struct vector a;
-  a.length = middle;
-  a.numbers = vec->numbers;
-
-  struct vector b;
-  b.length = vec->length - middle;
-  b.numbers = vec->numbers + middle;
-
-  int *merged = merge(mergeSort(&a), mergeSort(&b));
-  copy(merged, vec->numbers, vec->length);
-  free(merged);
-
-  return vec;
 }
 
