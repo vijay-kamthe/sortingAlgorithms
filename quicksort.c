@@ -3,45 +3,38 @@
 #include "utils.h"
 #include "quicksort.h"
 
-static int partition(struct vector * vector, int left, int right, int pivotIndex) {
+static size_t partition(void * base, size_t nmemb, size_t size, \
+        int(*cmp)(const void *p1, const void *p2), size_t pivotIndex) {
 
-    int pivotValue = vector->numbers[pivotIndex];
+    void *pivotPtr = base + pivotIndex * size;
+    void *endPtr = base + (nmemb - 1) * size;
+    swap(pivotPtr, endPtr, size);
 
-    swap(&vector->numbers[pivotIndex], &vector->numbers[right]);
-
-    int storeIndex = left;
-    int i;
-
-    for(i=left; i<right; ++i) {
-        if(vector->numbers[i] < pivotValue){
-            swap(&vector->numbers[i], &vector->numbers[storeIndex]);
-            ++storeIndex;
+    void *storePtr = base;
+    void *i;
+    for(i=base; i<endPtr; i+=size) {
+        if(cmp(i, endPtr)<0){
+            swap(i, storePtr, size);
+            storePtr += size;
         }
     }
 
-    swap(&vector->numbers[storeIndex], &vector->numbers[right]);
+    swap(storePtr, endPtr, size);
 
-    return storeIndex;
+    return (storePtr-base)/size;
 }
 
-static void quickSortRecur(struct vector * vector, int left, int right) {
+void quickSort(void * base, size_t nmemb, size_t size, int(*cmp)(const void *p1, const void *p2)) {
 
-    if(left<right) {
+    if(nmemb>1) {
 
-        int pivotIndex =  left + rand() % (right-left+1);
+        size_t pivotIndex = rand() % nmemb;
 
-        pivotIndex = partition(vector, left, right, pivotIndex);
+        pivotIndex = partition(base, nmemb, size, cmp, pivotIndex);
 
-        quickSortRecur(vector, left, pivotIndex-1);
+        quickSort(base, pivotIndex, size, cmp);
+        quickSort(base + (pivotIndex + 1) * size , nmemb - pivotIndex - 1, size, cmp);
 
-        quickSortRecur(vector, pivotIndex+1, right);
     }
-}
-
-struct vector * quickSort(struct vector * vector) {
-
-    quickSortRecur(vector, 0, vector->length-1);
-
-    return vector;
 }
 

@@ -8,8 +8,8 @@ all: test
 CSOURCE=utils.c \
 	vector.c \
 	test.c \
-	bubblesort.c# \
-#	quicksort.c\
+	bubblesort.c \
+	quicksort.c#\
 #	mergesort.c \
 #	heapsort.c
 
