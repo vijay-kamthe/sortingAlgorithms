@@ -1,8 +1,8 @@
 #ifndef BUBBLESORT
 #define BUBBLESORT
 
-#include "vector.h"
+#include <stdlib.h>
 
-struct vector* bubbleSort(struct vector *);
+void bubbleSort(void *, size_t, size_t, int(*cmp)(const void *, const void *));
 
 #endif

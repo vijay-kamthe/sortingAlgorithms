@@ -1,20 +1,20 @@
 #include "utils.h"
 #include "bubblesort.h"
 
-struct vector* bubbleSort(struct vector *vector) {
-    int sorted;
-    int i;
+void bubbleSort(void *base, size_t nmemb, size_t size, int(*cmp)(const void *, const void *)) {
+
+    size_t i;
+    char * ptr; // chars are exactly one byte
+    int sorted; 
     do {
+        ptr = (char*) base;
         sorted = 1;
-        for (i = 0; i < vector->length-1; ++i) {
-            if (vector->numbers[i] > vector->numbers[i+1]) {
-                // the swap function is defined in utils,
-                // it simple swap the value of two variables
-                swap(&vector->numbers[i], &vector->numbers[i+1]);
+        for (i = 0; i < nmemb-1; ++i) {
+            if (cmp(ptr + i * size,  ptr + (i + 1) * size)>0) {
+                swap(ptr + i * size, ptr + (i+1) * size, size);
                 sorted = 0;
             }
         }
     } while (!sorted);
-    return vector;
 }
 
