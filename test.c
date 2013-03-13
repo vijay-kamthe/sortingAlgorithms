@@ -3,14 +3,13 @@
 #include "bubblesort.h"
 #include "quicksort.h"
 #include "mergesort.h"
-//#include "heapsort.h"
+#include "heapsort.h"
 #include "test.h"
 
 static int cmpInt(const void *p1, const void *p2) {
 
     int a = *(int *) p1;
     int b = *(int *) p2;
-//    printf("a = %d, b = %d\n", a, b);
 
     if(a<b) return -1;
     if(a>b) return 1;
@@ -45,14 +44,14 @@ static int cmpArrays(const void *p1, const void *p2, size_t nmemb, int(*cmp)(con
     return 1;
 }
 
-static void print(int array[], size_t length){
-    printf("\n[");
-    size_t i;
-    for(i=0; i<length; ++i) {
-        printf("%d, ", array[i]);
-    }
-    printf("]\n");
-}
+//static void print(int array[], size_t length){
+//    printf("[");
+//    size_t i;
+//    for(i=0; i<length; ++i) {
+//        printf("%d, ", array[i]);
+//    }
+//    printf("]\n");
+//}
 
 static void testSort(sortFun sortfun, char *funName) {
 
@@ -133,7 +132,7 @@ int main() {
     struct {
         sortFun fun;
         char * name;
-    } funs[] = {{bubbleSort, "bubblesort"}, {quickSort, "quicksort"}, {mergeSort, "mergesort"}};//, {heapSort, "heapsort"}};
+    } funs[] = {{bubbleSort, "bubblesort"}, {quickSort, "quicksort"}, {mergeSort, "mergesort"}, {heapSort, "heapsort"}};
 
     size_t i;
     for(i=0; i<sizeof(funs)/sizeof(funs[0]); ++i) {

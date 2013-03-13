@@ -11,7 +11,7 @@ CSOURCE=utils.c \
 	bubblesort.c \
 	quicksort.c \
 	mergesort.c \
-#	heapsort.c
+	heapsort.c
 
 test: $(CSOURCE)
 	$(CC) $(CFLAGS) -o test $(CSOURCE)

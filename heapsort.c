@@ -9,30 +9,25 @@
 // node in the array
 #define PARENT(i) ((i+1)/2-1)
 
-static void fix(int * a, int length) {
+static void fix(void *base, size_t nmemb, size_t size, int(*cmp)(const void *, const void *)) {
     // take a broken heap (i.e. one
     // which has parent node(s) holding
     // value(s) smaller than their children,
     // and fix it by swapping those values
-    int i;
-    for(i = length-1; i>0; --i) {
-        if(a[i]>a[PARENT(i)]) {
-            swap(&a[i], &a[PARENT(i)]);
-            i = length;
+    size_t i;
+    for(i = nmemb-1; i>0; --i) {
+        if(cmp(base + i * size, base + PARENT(i) * size)>0) {
+            swap(base + i * size, base + PARENT(i) * size, size);
+            i = nmemb;
         }
     }
 }
 
-struct vector * heapSort(struct vector * vec) {
-
-    int length = vec->length;
-
-    while(length>0) {
-        fix(vec->numbers, length);
-        swap(&vec->numbers[0], &vec->numbers[length-1]);
-        --length;
+void heapSort(void *base, size_t nmemb, size_t size, int(*cmp)(const void *, const void *)) {
+    while(nmemb>0) {
+        fix(base, nmemb, size, cmp);
+        swap(base, base + (nmemb - 1) * size, size);
+        --nmemb;
     }
-
-    return vec;
 }
 
