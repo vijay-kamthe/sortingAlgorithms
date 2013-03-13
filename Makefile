@@ -9,8 +9,8 @@ CSOURCE=utils.c \
 	vector.c \
 	test.c \
 	bubblesort.c \
-	quicksort.c#\
-#	mergesort.c \
+	quicksort.c \
+	mergesort.c \
 #	heapsort.c
 
 test: $(CSOURCE)
