@@ -1,9 +1,7 @@
 #ifndef QUICKSORT
 #define QUICKSORT
 
-#include "vector.h"
-
-struct vector * quickSort(struct vector * vector);
+void quickSort(void *, size_t, size_t, int(*cmp)(const void *, const void *));
 
 #endif
 
