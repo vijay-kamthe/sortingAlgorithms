@@ -1,5 +1,7 @@
 CFLAGS=-Wall -g -ggdb -Wextra -O2
 
+POSTFLAGS=-lrt
+
 CC=gcc
 
 .PHONY:all
@@ -13,7 +15,7 @@ CSOURCE=utils.c \
 	main.c
 
 run: $(CSOURCE)
-	$(CC) $(CFLAGS) -o run $(CSOURCE)
+	$(CC) $(CFLAGS) -o run $(CSOURCE) $(POSTFLAGS)
 
 .PHONY:clean
 clean:

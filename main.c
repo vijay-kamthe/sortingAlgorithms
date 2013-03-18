@@ -1,6 +1,6 @@
 #include <stdio.h>       // for printf
 #include <assert.h>      // for assert()
-#include <time.h>        // for clock()
+#include <time.h>        // for clock_gettime() and struct timespec
 #include <stdlib.h>      // for size_t
 #include <unistd.h>      // for getopt()
 #include <limits.h>      // for INT_MAX
@@ -168,10 +168,10 @@ int main(int argc, char * argv[]) {
         char * name;
     } funs[] = { \
 //        {bubbleSort, "bubblesort"}, \ // Simply too slow to benchmark...
-        {quickSort, "quicksort"}, \
+        {quickSort, "quicksort   "}, \
         {qsort, "stdlib qsort"}, \
-        {mergeSort, "mergesort"}, \
-        {heapSort, "heapsort"}};
+        {mergeSort, "mergesort   "}, \
+        {heapSort, "heapsort    "}};
 
     if(testBool) {
         // UNIT TESTING
@@ -202,8 +202,8 @@ int main(int argc, char * argv[]) {
             printf("Benchmarking %s algorithm on shuffled array of %u chars (%u trials), best time: ", \
                     funs[i].name, ARRAYSIZE, NUMTRIALS);
             
-            unsigned long startTime;
-            unsigned long endTime;
+            struct timespec startTime;
+            struct timespec endTime;
             unsigned long thisTime;
             unsigned long bestTime = INT_MAX;
             for(j=0; j<NUMTRIALS; ++j) {
@@ -211,16 +211,16 @@ int main(int argc, char * argv[]) {
                 char *_shuffled = malloc(ARRAYSIZE * sizeof(char));
                 copy(_shuffled, shuffled, ARRAYSIZE * sizeof(char));
     
-                startTime = (unsigned long)clock()/(CLOCKS_PER_SEC/1000);
+                clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &startTime);
                 funs[i].fun(_shuffled, ARRAYSIZE, sizeof(char), cmpChar);
-                endTime = (unsigned long)clock()/(CLOCKS_PER_SEC/1000);
+                clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &endTime);
     
                 free(_shuffled);
 
-                thisTime = endTime - startTime;
+                thisTime = 1000000000*(endTime.tv_sec - startTime.tv_sec) + (endTime.tv_nsec - startTime.tv_nsec);
                 bestTime = thisTime<bestTime ? thisTime : bestTime;
             }
-            printf ("%lu milliseconds\n", bestTime);
+            printf ("%lu nanoseconds\n", bestTime);
         }
 
         printf("\n");
@@ -235,22 +235,22 @@ int main(int argc, char * argv[]) {
             printf("Benchmarking %s algorithm on sorted array of %u chars (%u trials), best time: ", \
                     funs[i].name, ARRAYSIZE, NUMTRIALS);
             
-            unsigned long startTime;
-            unsigned long endTime;
+            struct timespec startTime;
+            struct timespec endTime;
             unsigned long thisTime;
             unsigned long bestTime = INT_MAX;
             for(j=0; j<NUMTRIALS; ++j) {
 
                 char *_sorted = malloc(ARRAYSIZE * sizeof(char));
                 copy(_sorted, sorted, ARRAYSIZE * sizeof(char));
-    
-                startTime = (unsigned long)clock()/(CLOCKS_PER_SEC/1000);
+                
+                clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &startTime);
                 funs[i].fun(_sorted, ARRAYSIZE, sizeof(char), cmpChar);
-                endTime = (unsigned long)clock()/(CLOCKS_PER_SEC/1000);
-    
+                clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &endTime);
+   
                 free(_sorted);
 
-                thisTime = endTime - startTime;
+                thisTime = 1000000000*(endTime.tv_sec - startTime.tv_sec) + (endTime.tv_nsec - startTime.tv_nsec);
                 bestTime = thisTime<bestTime ? thisTime : bestTime;
             }
             printf ("%lu milliseconds\n", bestTime);
