@@ -2,9 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "hashmap.h"
 
-#define NUM_BUCKETS 100
+#include "hashmap.h"
 
 // Building blocks for a hash map
 
@@ -12,8 +11,12 @@ struct node;
 
 struct node{
     char * key;
-    void * value;
+    DATATYPE * value;
     struct node * next;
+};
+
+struct hashmap {
+    struct node * buckets[NUM_BUCKETS];
 };
 
 //Fowler-Noll-Vo hash function (FNV-1a)
@@ -24,71 +27,78 @@ static unsigned int hash(const char * key){
         hash = hash ^ key[i];
         hash = hash * 16777619;
     }
-
     return hash;
 }
-
-
-struct hashmap {
-    struct node * buckets[NUM_BUCKETS];
-};
 
 struct hashmap * hashmap_new() {
     struct hashmap * h = calloc(1, sizeof(struct hashmap));
     return h;
 }
 
-void hashmap_insert(struct hashmap * h, const char * key, void * value) {
+void hashmap_insert(struct hashmap * h, const char * key, DATATYPE value) {
     unsigned int bucket_idx = hash(key) % NUM_BUCKETS;
-    struct node * n = malloc(sizeof(struct node));
-    n->key = strdup(key);
-    n->value = value;
-    n->next = h->buckets[bucket_idx];
-    h->buckets[bucket_idx] = n;
+    if(!hashmap_lookup(h, key)) { // insert value
+        struct node * n = malloc(sizeof(struct node));
+        n->key = strdup(key);
+        n->value = malloc(sizeof(DATATYPE));
+        *(n->value) = value;
+        n->next = h->buckets[bucket_idx];
+        h->buckets[bucket_idx] = n;
+    } else { // overwrite value
+        struct node * n;
+        for(n = h->buckets[bucket_idx]; n != NULL; n = n->next) {
+            if(!strcmp(key, n->key)) {
+                *(n->value) = value;
+                break;
+            }
+        }
+    }
 }
 
-void * hashmap_delete(struct hashmap * h, const char * key) {
+DATATYPE * hashmap_lookup(struct hashmap *h, const char * key) {
     unsigned int bucket_idx = hash(key) % NUM_BUCKETS;
-    struct node ** n;
-    for(n = &h->buckets[bucket_idx]; *n != NULL; n = &((*n)->next)) {
-        if(!strcmp(key, (*n)->key)) {
-            struct node * tmp = *n;
-            *n = (*n)->next;
-            free(tmp->key);
-            void * v = tmp->value;
-            free(tmp);
-            return v;
+    struct node * n;
+    for(n = h->buckets[bucket_idx]; n != NULL; n = n->next) {
+        if(!strcmp(key, n->key)) {
+            return n->value;
         }
     }
     return NULL;
 }
 
+DATATYPE * hashmap_delete(struct hashmap * h, const char * key) {
+    unsigned int bucket_idx = hash(key) % NUM_BUCKETS;
+    struct node ** n;
+    for(n = &h->buckets[bucket_idx]; *n != NULL; n = &((*n)->next)) {
+        if(!strcmp(key, (*n)->key)) {
+            struct node * tmp = *n;
+            DATATYPE * val = tmp->value;
+            *n = (*n)->next;
+            free(tmp->key);
+            free(tmp->value);
+            free(tmp);
+            return val;
+        }
+    }
+    return NULL;
+}
 
-// move elsewhere later:
+static void delete_list(struct node * n) {
+    if(n==NULL) { //end of the list
+        return;
+    } else {
+        delete_list(n->next);
+        free(n->key);
+        free(n->value);
+        free(n);
+    }
+}
 
-int main(){
-//    printf("hash(\"abc\", 3) = %u\n", hash("abc"));
-//    printf("hash(\"HELLO\", 5) = %u\n", hash("HELLO"));
-//    printf("hash(\"FoObAr\", 6) = %u\n", hash("FoObAr"));
-    struct hashmap * my_hm = hashmap_new();
-    hashmap_insert(my_hm, "marek", (void *) 23);
-    hashmap_insert(my_hm, "alex", (void *) 2);
-    hashmap_insert(my_hm, "marek", (void *) 344343);
-    hashmap_insert(my_hm, "marek", (void *) 234);
-    hashmap_insert(my_hm, "marek", (void *) 34234);
-    hashmap_insert(my_hm, "marek", (void *) 399393);
-    hashmap_insert(my_hm, "marek", (void *) 34);
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "marek");
-    hashmap_delete(my_hm, "alex");
-
-    return 0;
+void hashmap_destroy(struct hashmap * h) {
+    unsigned int i;
+    for(i=0; i<NUM_BUCKETS; ++i) {
+        delete_list(h->buckets[i]);
+    }
+    free(h);
 }
 
