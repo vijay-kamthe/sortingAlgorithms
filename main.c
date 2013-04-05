@@ -4,10 +4,13 @@
 #include <stdlib.h>      // for size_t
 #include <unistd.h>      // for getopt()
 #include <limits.h>      // for INT_MAX
+#include <math.h>        // for abs()
+
 #include "bubblesort.h"  // for bubbleSort()
 #include "quicksort.h"   // for quickSort()
 #include "mergesort.h"   // for mergeSort()
 #include "heapsort.h"    // for heapSort()
+#include "hashmap.h"    // for hash maps
 #include "utils.h"       // for copy()
 
 typedef void (*sortFun)(void *, size_t, size_t, int(*cmp)(const void *, const void *));
@@ -133,6 +136,24 @@ static void testSort(sortFun sortfun, char *funName) {
 
 }
 
+static void testHashMap() {
+    printf("Testing hashmap... ");
+    struct hashmap * my_hm = hashmap_new();
+    hashmap_insert(my_hm, "foo", -1);
+    hashmap_insert(my_hm, "bar", -2.2821);
+    hashmap_insert(my_hm, "marek", 23);
+    hashmap_insert(my_hm, "alex", 2);
+    hashmap_insert(my_hm, "marek", 3.99);
+    hashmap_delete(my_hm, "alex");
+    assert(*hashmap_lookup(my_hm, "foo") == -1);
+    // compare distance for floats...
+    assert(abs(*hashmap_lookup(my_hm, "bar")- -2.2821) < 0.0001);
+    assert(abs(*hashmap_lookup(my_hm, "marek")- 3.99) < 0.0001);
+    assert(!hashmap_lookup(my_hm, "alex"));
+    hashmap_destroy(my_hm);
+    printf("test passed \n");
+}
+
 int main(int argc, char * argv[]) {
 
     char *USAGE = "\n  Incorrect usage. Use must be one of:\n\n"
@@ -180,6 +201,9 @@ int main(int argc, char * argv[]) {
         for(i=0; i<sizeof(funs)/sizeof(funs[0]); ++i) {
             testSort(funs[i].fun, funs[i].name);
         }
+        printf("\n");
+        
+        testHashMap();
         printf("\n");
     }
     

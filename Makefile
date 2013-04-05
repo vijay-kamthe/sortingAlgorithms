@@ -12,6 +12,7 @@ CSOURCE=utils.c \
 	quicksort.c \
 	mergesort.c \
 	heapsort.c \
+	hashmap.c \
 	main.c
 
 run: $(CSOURCE)
