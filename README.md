@@ -45,7 +45,9 @@ Testing heapsort     algorithm, integers array #3... test passed
 Testing heapsort     algorithm, integers array #4... test passed 
 Testing heapsort     algorithm, integers array #5... test passed 
 Testing heapsort     algorithm, double array #1... test passed 
-Testing heapsort     algorithm, char array #1... test passed 
+Testing heapsort     algorithm, char array #1... test passed
+
+Testing hashmap... test passed
 
 Benchmarking quicksort    algorithm on shuffled array of 200000 chars (10 trials), best time: 969891933 nanoseconds
 Benchmarking stdlib qsort algorithm on shuffled array of 200000 chars (10 trials), best time: 222875503 nanoseconds
